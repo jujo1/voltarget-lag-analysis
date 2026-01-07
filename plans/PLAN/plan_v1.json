@@ -1,0 +1,199 @@
+{
+  "$schema": "workflow_tree.schema.json",
+  "workflow_id": "voltarget_real_alloc_remediation",
+  "title": "Portfolio Volatility Targeting - Real Data Test Remediation",
+  "created_at": "2026-01-07T04:07:00Z",
+  "user_request_verbatim": "use PK data files *.csv to build 100% testing of all test cases, using real data",
+  "status": "in_progress",
+  "current_stage": "PLAN",
+  "objectives": {
+    "primary": "Update all tests to use REAL allocation data from CSV files instead of np.random()",
+    "secondary": [
+      "Ensure all 6 CSV data types are tested (returns, alloc_raw, alloc_usd, alloc_lots, contract_values, prices)",
+      "Achieve true 100% coverage with real data",
+      "Pass third-party validation"
+    ],
+    "success_criteria": [
+      {
+        "id": "SC1",
+        "criterion": "Tests use bundle.alloc_raw instead of np.random for allocations",
+        "evidence_type": "grep",
+        "binary": true,
+        "test_command": "grep -c 'bundle.alloc_raw' test_comprehensive.py > 0 && grep -c 'np.random' test_comprehensive.py == 0"
+      },
+      {
+        "id": "SC2",
+        "criterion": "All 22+ tests pass with real data",
+        "evidence_type": "log",
+        "binary": true,
+        "test_command": "pytest -v",
+        "evidence_path": "test/full/logs/pytest_final.log"
+      },
+      {
+        "id": "SC3",
+        "criterion": "Reality test with real allocations produces valid results",
+        "evidence_type": "log",
+        "binary": true,
+        "test_command": "python reality_test.py"
+      },
+      {
+        "id": "SC4",
+        "criterion": "Third-party (OpenAI) validation passes",
+        "evidence_type": "text",
+        "binary": true
+      }
+    ],
+    "fail_criteria": [
+      {
+        "id": "FC1",
+        "criterion": "Any test still uses np.random for allocations",
+        "auto_restart": true
+      },
+      {
+        "id": "FC2",
+        "criterion": "Any test fails with real data",
+        "auto_restart": true
+      }
+    ]
+  },
+  "stages": [
+    {
+      "stage_id": "PLAN",
+      "order": 1,
+      "status": "in_progress",
+      "tasks": [
+        {
+          "task_id": "T1.1",
+          "title": "Create workflow structure",
+          "status": "completed"
+        },
+        {
+          "task_id": "T1.2",
+          "title": "Define success criteria",
+          "status": "completed"
+        },
+        {
+          "task_id": "T1.3",
+          "title": "Create hierarchical todos",
+          "status": "in_progress"
+        }
+      ]
+    },
+    {
+      "stage_id": "REVIEW",
+      "order": 2,
+      "status": "pending",
+      "tasks": [
+        {
+          "task_id": "T2.1",
+          "title": "Review plan completeness"
+        },
+        {
+          "task_id": "T2.2",
+          "title": "Identify gaps and risks"
+        }
+      ]
+    },
+    {
+      "stage_id": "DEBATE",
+      "order": 3,
+      "status": "pending",
+      "tasks": [
+        {
+          "task_id": "T3.1",
+          "title": "Challenge assumptions about real data usage"
+        },
+        {
+          "task_id": "T3.2",
+          "title": "Verify methodology correctness"
+        }
+      ]
+    },
+    {
+      "stage_id": "IMPLEMENT",
+      "order": 4,
+      "status": "pending",
+      "tasks": [
+        {
+          "task_id": "T4.1",
+          "title": "Update test_ex_ante_equals_target_exactly to use real allocations",
+          "priority": "high"
+        },
+        {
+          "task_id": "T4.2",
+          "title": "Update test_ex_post_within_realistic_tolerance to use real allocations",
+          "priority": "high"
+        },
+        {
+          "task_id": "T4.3",
+          "title": "Update test_full_pipeline_real_data to use real allocations",
+          "priority": "high"
+        },
+        {
+          "task_id": "T4.4",
+          "title": "Add test for contract value integration",
+          "priority": "medium"
+        },
+        {
+          "task_id": "T4.5",
+          "title": "Add test for lot allocation handling",
+          "priority": "medium"
+        },
+        {
+          "task_id": "T4.6",
+          "title": "Remove all np.random usage from allocation tests",
+          "priority": "critical"
+        }
+      ]
+    },
+    {
+      "stage_id": "TEST",
+      "order": 5,
+      "status": "pending",
+      "tasks": [
+        {
+          "task_id": "T5.1",
+          "title": "Run unit tests"
+        },
+        {
+          "task_id": "T5.2",
+          "title": "Run integration tests"
+        },
+        {
+          "task_id": "T5.3",
+          "title": "Run full pipeline test"
+        }
+      ]
+    },
+    {
+      "stage_id": "VALIDATE",
+      "order": 6,
+      "status": "pending",
+      "tasks": [
+        {
+          "task_id": "T6.1",
+          "title": "Third-party validation"
+        },
+        {
+          "task_id": "T6.2",
+          "title": "Evidence collection"
+        }
+      ]
+    },
+    {
+      "stage_id": "LEARN",
+      "order": 7,
+      "status": "pending",
+      "tasks": [
+        {
+          "task_id": "T7.1",
+          "title": "Document lessons learned"
+        },
+        {
+          "task_id": "T7.2",
+          "title": "Update memory"
+        }
+      ]
+    }
+  ]
+}
